@@ -1,6 +1,7 @@
 const express = require("express"),
     app = express();
 
+app.use(express.static("public"));
 const layouts = require("express-ejs-layouts");
 app.set("view engine", "ejs");
 app.use(layouts);
@@ -24,36 +25,6 @@ app.use(
 );
 
 app.use(express.json());
-
-// router.get("/courses.html", (req, res) => {
-//     res.writeHead(httpStatus.OK, contentTypes.html);
-//     utils.getFile("views/courses.html", res);
-// });
-
-// router.get("/contact.html", (req, res) => {
-//     res.writeHead(httpStatus.OK, contentTypes.html);
-//     utils.getFile("views/contact.html", res);
-// });
-
-// router.post("/" , (req, res) => {
-//     res.writeHead(httpStatus.OK, contentTypes.html);
-//     utils.getFile("views/thanks.html", res);
-// });
-
-// router.post("/graph.png" , (req, res) => {
-//     res.writeHead(httpStatus.OK, contentTypes.png);
-//     utils.getFile("public/images/graph.png", res);
-// });
-
-// router.post("/people.jpg" , (req, res) => {
-//     res.writeHead(httpStatus.OK, contentTypes.jpg);
-//     utils.getFile("public/images/people.jpg", res);
-// });
-
-// router.post("/product.jpg" , (req, res) => {
-//     res.writeHead(httpStatus.OK, contentTypes.jpg);
-//     utils.getFile("public/images/product.jpg", res);
-// });
 
 app.listen(app.get("port"), () => {
     console.log(
