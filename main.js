@@ -1,44 +1,64 @@
-const port = 3000,
-    http = require("http"),
-    httpStatus = require("http-status-codes"),
-    router = require("./router"),
-    contentTypes = require("./contentTypes"),
-    utils = require("./utils");
+const express = require("express"),
+    app = express();
 
-router.get("/" , (req, res) => {
-    res.writeHead(httpStatus.OK, contentTypes.html);
-    utils.getFile("views/index.html", res);
+const layouts = require("express-ejs-layouts");
+app.set("view engine", "ejs");
+app.use(layouts);
+
+const homeController = require("./controllers/homeController");
+
+app.set("port", process.env.PORT || 3000);
+
+app.get("/" , (req, res) => {
+    res.send("Welcome to Confetti Cuisine!");
 });
 
-router.get("/courses.html", (req, res) => {
-    res.writeHead(httpStatus.OK, contentTypes.html);
-    utils.getFile("views/courses.html", res);
-});
+app.get("/courses", homeController.showCourses);
+app.get("/contact", homeController.showSignUp);
+app.post("/contact", homeController.postedSignUpForm);
 
-router.get("/contact.html", (req, res) => {
-    res.writeHead(httpStatus.OK, contentTypes.html);
-    utils.getFile("views/contact.html", res);
-});
+app.use(
+    express.urlencoded({
+        extended: false
+    })
+);
 
-router.post("/" , (req, res) => {
-    res.writeHead(httpStatus.OK, contentTypes.html);
-    utils.getFile("views/thanks.html", res);
-});
+app.use(express.json());
 
-router.post("/graph.png" , (req, res) => {
-    res.writeHead(httpStatus.OK, contentTypes.png);
-    utils.getFile("public/images/graph.png", res);
-});
+// router.get("/courses.html", (req, res) => {
+//     res.writeHead(httpStatus.OK, contentTypes.html);
+//     utils.getFile("views/courses.html", res);
+// });
 
-router.post("/people.jpg" , (req, res) => {
-    res.writeHead(httpStatus.OK, contentTypes.jpg);
-    utils.getFile("public/images/people.jpg", res);
-});
+// router.get("/contact.html", (req, res) => {
+//     res.writeHead(httpStatus.OK, contentTypes.html);
+//     utils.getFile("views/contact.html", res);
+// });
 
-router.post("/product.jpg" , (req, res) => {
-    res.writeHead(httpStatus.OK, contentTypes.jpg);
-    utils.getFile("public/images/product.jpg", res);
-});
+// router.post("/" , (req, res) => {
+//     res.writeHead(httpStatus.OK, contentTypes.html);
+//     utils.getFile("views/thanks.html", res);
+// });
 
-http.createServer(router.handle).listen(port);
-console.log(`The server is listening on port number: ${port}`);
+// router.post("/graph.png" , (req, res) => {
+//     res.writeHead(httpStatus.OK, contentTypes.png);
+//     utils.getFile("public/images/graph.png", res);
+// });
+
+// router.post("/people.jpg" , (req, res) => {
+//     res.writeHead(httpStatus.OK, contentTypes.jpg);
+//     utils.getFile("public/images/people.jpg", res);
+// });
+
+// router.post("/product.jpg" , (req, res) => {
+//     res.writeHead(httpStatus.OK, contentTypes.jpg);
+//     utils.getFile("public/images/product.jpg", res);
+// });
+
+app.listen(app.get("port"), () => {
+    console.log(
+        `Server running at http://localhost:${app.get(
+            "port"
+        )}`
+    );
+});
